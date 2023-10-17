@@ -41,7 +41,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          build-args:
+          build-args: |
             KEYCLOAK_VERSION: ${{ matrix.keycloak_version }}
             JAVA_VERSION: ${{ matrix.java_version }}
           tags: |
