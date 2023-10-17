@@ -43,8 +43,8 @@ jobs:
           file: ./Dockerfile
           push: true
           build-args: |
-            KEYCLOAK_VERSION: ${{ matrix.keycloak_version }}
-            DEV_DEPENDECIES: ${{ matrix.dev_dependencies }}
+            "KEYCLOAK_VERSION=${{ matrix.keycloak_version }}"
+            "DEV_DEPENDECIES=${{ matrix.dev_dependencies }}"
           tags: |
             ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ github.sha }}-base-${{ matrix.keycloak_version }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -55,8 +55,8 @@ jobs:
           file: ./Dockerfile
           push: true
           build-args: |
-            KEYCLOAK_VERSION: ${{ matrix.keycloak_version }}
-            DEV_DEPENDECIES: ${{ matrix.dev_dependencies }}
+            "KEYCLOAK_VERSION:=${{ matrix.keycloak_version }}"
+            "DEV_DEPENDECIES:=${{ matrix.dev_dependencies }}"
           tags: |
             ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ github.sha }}-full-${{ matrix.keycloak_version }}
           labels: ${{ steps.meta.outputs.labels }}
