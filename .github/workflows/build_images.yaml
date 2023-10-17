@@ -46,7 +46,7 @@ jobs:
             "KEYCLOAK_VERSION=${{ matrix.keycloak_version }}"
             "DEV_DEPENDECIES=${{ matrix.dev_dependencies }}"
           tags: |
-            ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ github.sha }}-base-${{ matrix.keycloak_version }}
+            ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ matrix.keycloak_version }}-base
           labels: ${{ steps.meta.outputs.labels }}
       - if: matrix.dev_dependencies == 'tar gzip maven-openjdk17 nodejs npm'
         uses: docker/build-push-action@v4
@@ -58,5 +58,5 @@ jobs:
             "KEYCLOAK_VERSION:=${{ matrix.keycloak_version }}"
             "DEV_DEPENDECIES:=${{ matrix.dev_dependencies }}"
           tags: |
-            ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ github.sha }}-full-${{ matrix.keycloak_version }}
+            ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ matrix.keycloak_version }}-full
           labels: ${{ steps.meta.outputs.labels }}
