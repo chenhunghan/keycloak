@@ -15,7 +15,7 @@ jobs:
   image_to_gcr:
     strategy:
       matrix:
-        keycloak_version: [10, 12, 14]
+        keycloak_version: [22.0.4]
         java_version: [17]
     runs-on: ubuntu-latest
     permissions:
