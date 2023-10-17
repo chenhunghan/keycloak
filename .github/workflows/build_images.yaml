@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         keycloak_version: [22.0.4]
-        java_version: [17]
+        dev_dependencies: ["tar gzip", "tar gzip maven-openjdk17 nodejs npm"]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -36,7 +36,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-      - name: Build and push Docker image
+      - if: matrix.dev_dependencies == 'tar gzip'
         uses: docker/build-push-action@v4
         with:
           context: .
@@ -44,8 +44,19 @@ jobs:
           push: true
           build-args: |
             KEYCLOAK_VERSION: ${{ matrix.keycloak_version }}
-            JAVA_VERSION: ${{ matrix.java_version }}
+            DEV_DEPENDECIES: ${{ matrix.dev_dependencies }}
           tags: |
-            ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ matrix.keycloak_version }}
+            ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ github.sha }}-base-${{ matrix.keycloak_version }}
+          labels: ${{ steps.meta.outputs.labels }}
+      - if: matrix.dev_dependencies == 'tar gzip maven-openjdk17 nodejs npm'
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          build-args: |
+            KEYCLOAK_VERSION: ${{ matrix.keycloak_version }}
+            DEV_DEPENDECIES: ${{ matrix.dev_dependencies }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ github.sha }}-full-${{ matrix.keycloak_version }}
           labels: ${{ steps.meta.outputs.labels }}
