@@ -1,19 +1,14 @@
 # Dev-Optimized Container Images For Keycloak Extension and Theme Development
+The image is built with `tar` and `gzip`, thus allows `devspace dev`/`kubectl cp` 
 
 Like https://github.com/loft-sh/devspace-containers, but for Keycloak.
-
-## Flavor
-
-- `-base`, with only `tar` and `gzip`, nothing more
-- `-full`, wiht `jdk`/`maven` and `node/npm`
 
 
 ## Devspace
 
 To use with `devspace`
 
-The `-base` image allows `devspace dev`/`kubectl cp`, and `-full` has all the dev tools you need.
-```
+```yaml
 version: v2beta1
 name: keycloak
 deployments:
@@ -25,8 +20,8 @@ deployments:
       values:
         image:
           repository: ghcr.io/chenhunghan/keycloak
-          tag: 22.0.4-base
+          tag: 22.0.4
+# with tar and gzip, `devspace dev` works without issues
 dev:
   keycloak:
-    devImage: ghcr.io/chenhunghan/keycloak:22.0.4-ful
 ```

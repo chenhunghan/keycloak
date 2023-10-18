@@ -15,8 +15,27 @@ jobs:
   image_to_gcr:
     strategy:
       matrix:
-        keycloak_version: [22.0.4]
-        dev_dependencies: ["tar gzip", "tar gzip maven-openjdk17 nodejs npm"]
+        keycloak_version:
+          - 22.0.4
+          - 22.0.3 
+          - 22.0.2
+          - 22.0.0
+          - 21.1.2
+          - 21.1.0
+          - 21.0.0
+          - 19.0.0
+          - 18.0.0
+          - 17.0.0
+          - 16.1.0
+          - 16.0.0
+          - 15.1.0
+          - 15.0.1
+          - 15.0.0
+          - 14.0.0
+          - 13.0.0
+          - 12.0.0
+          - 11.0.0
+          - 10.0.0
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -36,27 +55,13 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-      - if: matrix.dev_dependencies == 'tar gzip'
-        uses: docker/build-push-action@v4
+      - uses: docker/build-push-action@v4
         with:
           context: .
           file: ./Dockerfile
           push: true
           build-args: |
             "KEYCLOAK_VERSION=${{ matrix.keycloak_version }}"
-            "DEV_DEPENDECIES=${{ matrix.dev_dependencies }}"
           tags: |
-            ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ matrix.keycloak_version }}-base
-          labels: ${{ steps.meta.outputs.labels }}
-      - if: matrix.dev_dependencies == 'tar gzip maven-openjdk17 nodejs npm'
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          build-args: |
-            "KEYCLOAK_VERSION:=${{ matrix.keycloak_version }}"
-            "DEV_DEPENDECIES:=${{ matrix.dev_dependencies }}"
-          tags: |
-            ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ matrix.keycloak_version }}-full
+            ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ matrix.keycloak_version }}
           labels: ${{ steps.meta.outputs.labels }}
