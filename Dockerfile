@@ -14,4 +14,8 @@ RUN dnf install --installroot /mnt/rootfs ${DEV_DEPENDECIES} --releasever 9 --se
 
 FROM quay.io/keycloak/keycloak:${KEYCLOAK_VERSION}
 COPY --from=ubi-micro-build /mnt/rootfs /
+
+# use root user https://github.com/keycloak/keycloak/blob/main/quarkus/container/Dockerfile#L28
+USER 0
+
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
