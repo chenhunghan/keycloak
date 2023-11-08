@@ -1,8 +1,7 @@
-# Dev-Optimized Container Images For Keycloak Extension and Theme Development
-The image is built with `tar` and `gzip`, thus allows `devspace dev`/`kubectl cp` 
+# Dev-Optimized container images For Keycloak SPI and theme development
+The image is built with `tar`/`gzip`/`util-linux`, thus allows `devspace dev`/`kubectl cp` and allow devspace restart helper scripts work.
 
 Like https://github.com/loft-sh/devspace-containers, but for Keycloak.
-
 
 ## Devspace
 
@@ -20,8 +19,13 @@ deployments:
       values:
         image:
           repository: ghcr.io/chenhunghan/keycloak
-          tag: 22.0.4
+          tag: 22.0.5
 # with tar and gzip, `devspace dev` works without issues
 dev:
   keycloak:
+    sync:
+      - path: ./:/
+        # with `util-linux` allow reject restart helper scripts
+        onUpload:
+          restartContainer: true
 ```
